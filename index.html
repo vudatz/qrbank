@@ -3,188 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tạo mã thanh toán</title>
+    <title>@vudatz – API Bank</title>
+    
+    <link rel="icon" href="https://www.gstatic.com/lamda/images/favicon_v1_150160d13f0865297a88.svg" type="image/svg+xml">
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #f9fbff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: #1f1f1f;
-        }
-        .gemini-card {
-            background: #ffffff;
-            border-radius: 28px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
-            border: 1px solid #e3e3e3;
-        }
-        .input-field {
-            background: #f0f4f9;
-            border-radius: 12px;
-            padding: 12px 16px;
-            border: 2px solid transparent;
-            transition: all 0.2s ease;
-        }
-        .input-field:focus-within {
-            background: #ffffff;
-            border-color: #0b57d0;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-        }
-        input, select {
-            background: transparent;
-            border: none;
-            outline: none;
+        body { font-family: 'Plus Jakarta Sans', sans-serif; transition: background 0.3s ease; }
+        .dark { background-color: #0f172a !important; }
+        .dark .card-bg { background-color: #1e293b !important; border-color: #334155; }
+        .dark .input-bg { background-color: #334155 !important; color: white !important; }
+        .dark .detail-container { background-color: #0f172a !important; border: 1px solid #334155; }
+        
+        /* KHÓA CỨNG MÀU CHỮ CHI TIẾT */
+        #out-bank, #out-acc { color: #1e293b !important; font-weight: 700; }
+        #out-amt { color: #3b82f6 !important; font-weight: 800; }
+        #out-note { color: #0f172a !important; font-weight: 800; }
+
+        .dark #out-bank, .dark #out-acc { color: #ffffff !important; }
+        .dark #out-amt { color: #3b82f6 !important; }
+        .dark #out-note { color: #ffffff !important; }
+
+        .detail-container {
+            background-color: #f8fafd;
+            border-radius: 40px;
+            padding: 32px;
             width: 100%;
-            font-size: 16px;
-            color: #1f1f1f;
+            max-width: 380px;
         }
-        .btn-create {
-            background: #0b57d0;
-            color: white;
+
+        .input-group { border-radius: 20px; border: 2px solid transparent; transition: all 0.2s; }
+        .input-group:focus-within { border-color: #3b82f6; background: white; }
+        .dark .input-group:focus-within { background: #1e293b; }
+
+        .btn-toggle {
+            background-color: white;
+            color: #1e293b;
+            border: 1px solid #e2e8f0;
+            padding: 8px 16px;
             border-radius: 100px;
-            padding: 14px;
-            font-weight: 500;
-            transition: background 0.2s;
-        }
-        .btn-create:active {
-            background: #0842a0;
-            transform: scale(0.98);
-        }
-        .result-box {
-            background: #f8fafd;
-            border-radius: 20px;
-            border: 1px solid #e1e3e1;
-        }
-        .info-text {
             font-size: 13px;
-            color: #444746;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .info-value {
-            font-weight: 600;
-            color: #1f1f1f;
-        }
+        .dark .btn-toggle { background-color: #1e293b; color: white; border-color: #334155; }
+        
+        /* Căn chỉnh logo Gemini lấp lánh phóng to */
+        .sparkle-logo { width: 52px; height: 52px; flex-shrink: 0; }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4">
+<body class="bg-slate-50 min-h-screen flex flex-col items-center justify-center p-4 md:p-10">
 
-    <div class="gemini-card w-full max-w-md p-6 md:p-8">
-        <header class="mb-8">
-            <h1 class="text-2xl font-medium tracking-tight">Tạo QR thanh toán</h1>
-            <p class="text-sm text-gray-500 mt-1">Sử dụng API VietQR chuẩn</p>
-        </header>
-
-        <div class="space-y-5">
-            <div class="space-y-1">
-                <label class="text-xs font-medium ml-1 text-gray-600">Ngân hàng</label>
-                <div class="input-field">
-                    <select id="bank-select" onchange="updateBankLogo()">
-                        </select>
-                </div>
-            </div>
-
-            <div class="space-y-1">
-                <label class="text-xs font-medium ml-1 text-gray-600">Số tài khoản</label>
-                <div class="input-field">
-                    <input type="text" id="account" value="10323888" placeholder="Nhập số tài khoản...">
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-                <div class="space-y-1">
-                    <label class="text-xs font-medium ml-1 text-gray-600">Số tiền</label>
-                    <div class="input-field">
-                        <input type="number" id="amount" placeholder="VNĐ">
-                    </div>
-                </div>
-                <div class="space-y-1">
-                    <label class="text-xs font-medium ml-1 text-gray-600">Ghi chú</label>
-                    <div class="input-field flex items-center gap-1">
-                        <span class="text-blue-600 font-bold text-sm">SEVQR</span>
-                        <input type="text" id="note" placeholder="..." class="w-full">
-                    </div>
-                </div>
-            </div>
-
-            <button onclick="generate()" class="w-full btn-create mt-2 shadow-sm">
-                Tạo mã QR
+    <div class="w-full max-w-5xl flex-grow flex flex-col justify-center">
+        <div class="flex justify-end gap-3 mb-6">
+            <button onclick="toggleLang()" class="btn-toggle shadow-sm">
+                <span id="lang-text">🇻🇳 Tiếng Việt</span>
+            </button>
+            <button onclick="toggleDarkMode()" class="btn-toggle shadow-sm w-12 justify-center">
+                <span id="dark-icon">🌙</span>
             </button>
         </div>
 
-        <div id="result" class="mt-8 hidden animate-in fade-in duration-500">
-            <div class="flex justify-center mb-6">
-                <div class="p-3 bg-white border border-gray-200 rounded-2xl shadow-sm">
-                    <img id="qr-img" src="" alt="QR Code" class="w-64 h-64">
+        <div class="flex flex-col md:flex-row gap-10 items-start">
+            <div class="card-bg bg-white w-full md:w-5/12 p-8 rounded-[40px] shadow-xl border border-slate-100">
+                <header class="mb-8">
+                    <div class="flex items-center gap-4">
+                        <svg class="sparkle-logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" fill="url(#gemini_grad)"/>
+                            <path d="M19 3L19.7 5.3L22 6L19.7 6.7L19 9L18.3 6.7L16 6L18.3 5.3L19 3Z" fill="url(#gemini_grad)"/>
+                            <defs>
+                                <linearGradient id="gemini_grad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#4285F4"/>
+                                    <stop offset="0.5" stop-color="#9B72CB"/>
+                                    <stop offset="1" stop-color="#D96570"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <div class="flex flex-col justify-center">
+                            <h1 class="text-3xl font-extrabold tracking-tight text-blue-600 leading-none">@vudatz – API Bank</h1>
+                            <p id="sub-title" class="text-base text-slate-500 font-medium mt-1 leading-tight">Hệ thống tạo mã QR thanh toán</p>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="space-y-5">
+                    <div>
+                        <label id="lbl-bank" class="text-[10px] font-bold text-slate-400 uppercase ml-2 mb-1 block">Ngân hàng</label>
+                        <div class="input-group input-bg bg-slate-50 p-4">
+                            <select id="bank-select" class="w-full bg-transparent outline-none font-bold text-sm cursor-pointer" onchange="updateResultInfo()"></select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label id="lbl-acc" class="text-[10px] font-bold text-slate-400 uppercase ml-2 mb-1 block">Số tài khoản</label>
+                        <div class="input-group input-bg bg-slate-50 p-4">
+                            <input type="text" id="account" value="10323888" class="w-full bg-transparent outline-none font-bold">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label id="lbl-amt" class="text-[10px] font-bold text-slate-400 uppercase ml-2 mb-1 block">Số tiền (Tối thiểu 2.000đ)</label>
+                        <div class="input-group input-bg bg-slate-50 p-4">
+                            <input type="number" id="amount" placeholder="0" class="w-full bg-transparent outline-none font-extrabold text-blue-500 text-lg">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label id="lbl-note" class="text-[10px] font-bold text-slate-400 uppercase ml-2 mb-1 block">Nội dung</label>
+                        <div class="input-group input-bg bg-slate-50 p-4 flex items-center">
+                            <span class="text-blue-600 font-black text-xs mr-2 uppercase">SEVQR</span>
+                            <input type="text" id="note" placeholder="..." class="w-full bg-transparent outline-none font-bold">
+                        </div>
+                    </div>
+
+                    <button onclick="generateQR()" id="btn-gen" class="w-full bg-blue-600 text-white py-5 rounded-[22px] font-extrabold text-sm uppercase tracking-widest hover:bg-blue-700 active:scale-95 transition-all mt-4 shadow-lg shadow-blue-100">
+                        Tạo mã ngay
+                    </button>
                 </div>
             </div>
 
-            <div class="result-box p-5 space-y-3">
-                <div class="flex justify-between items-center border-b border-gray-200 pb-2">
-                    <span class="info-text">Ngân hàng</span>
-                    <span class="info-value" id="out-bank"></span>
+            <div id="result-side" class="w-full md:w-7/12 flex flex-col items-center justify-center min-h-[500px]">
+                <div id="empty-state" class="text-slate-200 dark:text-slate-800">
+                    <svg class="w-32 h-32 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" /></svg>
                 </div>
-                <div class="flex justify-between items-center border-b border-gray-200 pb-2">
-                    <span class="info-text">Tài khoản</span>
-                    <span class="info-value font-mono" id="out-acc"></span>
-                </div>
-                <div class="flex justify-between items-center border-b border-gray-200 pb-2">
-                    <span class="info-text">Số tiền</span>
-                    <span class="info-value text-blue-700" id="out-amt"></span>
-                </div>
-                <div class="flex justify-between items-center">
-                    <span class="info-text">Nội dung</span>
-                    <span class="info-value" id="out-note"></span>
+
+                <div id="result-content" class="hidden w-full flex flex-col items-center">
+                    <div class="bg-white p-5 rounded-[40px] shadow-2xl border border-slate-50 mb-8">
+                        <img id="qr-img" src="" class="w-64 h-64 rounded-xl relative z-10 mx-auto object-contain">
+                    </div>
+
+                    <div class="detail-container shadow-sm border border-slate-100">
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span id="res-bank-lbl" class="text-slate-400 text-sm font-medium">Ngân hàng</span>
+                                <span id="out-bank" class="text-sm"></span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span id="res-acc-lbl" class="text-slate-400 text-sm font-medium">Số tài khoản</span>
+                                <span id="out-acc" class="text-sm font-mono"></span>
+                            </div>
+                            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-4">
+                                <span id="res-amt-lbl" class="text-slate-400 text-sm font-medium">Số tiền</span>
+                                <span id="out-amt" class="text-xl"></span>
+                            </div>
+                        </div>
+                        <div class="mt-8 text-center">
+                            <span id="res-note-lbl" class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] block mb-2">Nội dung chuyển khoản</span>
+                            <span id="out-note" class="text-2xl uppercase"></span>
+                        </div>
+                    </div>
+                    <p id="hint-save" class="mt-8 text-[11px] text-slate-300 font-bold uppercase tracking-[0.3em]">Nhấn giữ để lưu ảnh</p>
                 </div>
             </div>
-            <p class="text-center text-[11px] text-gray-400 mt-4 italic underline decoration-gray-200">Nhấn giữ ảnh để lưu hoặc chia sẻ</p>
         </div>
     </div>
 
+    <footer class="w-full max-w-5xl mt-10 pb-6 border-t border-slate-200 dark:border-slate-800 pt-6 flex flex-col md:flex-row justify-between items-center text-slate-400 text-xs font-bold uppercase tracking-widest gap-4">
+        <div>@vudatz 2026</div>
+        <a href="https://facebook.com/vudatz" target="_blank" class="flex items-center gap-2 hover:text-blue-500 transition-colors">
+            <span>Hỗ trợ</span>
+        </a>
+    </footer>
+
     <script>
+        let isDark = false;
+        let lang = 'vi';
         const banks = [
             {n: "VietinBank", c: "ICB"}, {n: "Vietcombank", c: "VCB"}, {n: "MBBank", c: "MB"},
             {n: "ACB", c: "ACB"}, {n: "VPBank", c: "VPB"}, {n: "TPBank", c: "TPB"},
             {n: "BIDV", c: "BIDV"}, {n: "Sacombank", c: "STB"}, {n: "Agribank", c: "VBA"},
-            {n: "Techcombank", c: "TCB"}, {n: "VIB", c: "VIB"}, {n: "HDBank", c: "HDB"},
-            {n: "MSB", c: "MSB"}, {n: "OCB", c: "OCB"}, {n: "SHB", c: "SHB"}
+            {n: "Techcombank", c: "TCB"}
         ];
 
+        const dict = {
+            vi: { sub: "Hệ thống tạo mã QR thanh toán", bank: "Ngân hàng", acc: "Số tài khoản", amt: "Số tiền (Tối thiểu 2.000đ)", note: "Nội dung", btn: "Tạo mã ngay", resBank: "Ngân hàng", resAcc: "Số tài khoản", resAmt: "Số tiền", resNote: "Nội dung chuyển khoản", err: "Số tiền tối thiểu là 2.000đ", langBtn: "1. 🇻🇳 Tiếng Việt", hint: "Nhấn giữ để lưu ảnh" },
+            en: { sub: "QR Payment System", bank: "Bank", acc: "Account No.", amt: "Amount (Min 2,000đ)", note: "Reference", btn: "Generate Now", resBank: "Bank", resAcc: "Account", resAmt: "Value", resNote: "Description", err: "Minimum amount is 2,000đ", langBtn: "2. 🇺🇳 English", hint: "Touch & Hold to Save" }
+        };
+
         const select = document.getElementById('bank-select');
-        banks.forEach(b => {
-            const opt = document.createElement('option');
-            opt.value = b.c;
-            opt.textContent = b.n;
-            if(b.c === "ICB") opt.selected = true;
-            select.appendChild(opt);
-        });
+        banks.forEach(b => select.add(new Option(b.n, b.c, b.c==='ICB', b.c==='ICB')));
 
-        function generate() {
+        function toggleDarkMode() {
+            isDark = !isDark;
+            document.body.classList.toggle('dark');
+            document.getElementById('dark-icon').innerText = isDark ? '☀️' : '🌙';
+        }
+
+        function toggleLang() {
+            lang = lang === 'vi' ? 'en' : 'vi';
+            updateUI();
+        }
+
+        function updateUI() {
+            const d = dict[lang];
+            document.getElementById('lang-text').innerText = d.langBtn;
+            document.getElementById('sub-title').innerText = d.sub;
+            document.getElementById('lbl-bank').innerText = d.bank;
+            document.getElementById('lbl-acc').innerText = d.acc;
+            document.getElementById('lbl-amt').innerText = d.amt;
+            document.getElementById('btn-gen').innerText = d.btn;
+            document.getElementById('res-bank-lbl').innerText = d.resBank;
+            document.getElementById('res-acc-lbl').innerText = d.resAcc;
+            document.getElementById('res-amt-lbl').innerText = d.resAmt;
+            document.getElementById('res-note-lbl').innerText = d.resNote;
+            document.getElementById('hint-save').innerText = d.hint;
+            updateResultInfo();
+        }
+
+        function updateResultInfo() {
             const b = select.value;
-            const a = document.getElementById('account').value;
-            const am = document.getElementById('amount').value;
-            const n = document.getElementById('note').value.trim();
-            const fullNote = "SEVQR " + n;
-
-            if(!am) {
-                alert("Bạn chưa nhập số tiền thanh toán");
-                return;
+            const bankName = banks.find(x => x.c === b).n;
+            const accNum = document.getElementById('account').value;
+            if(!document.getElementById('result-content').classList.contains('hidden')) {
+                document.getElementById('out-bank').innerText = bankName;
+                document.getElementById('out-acc').innerText = accNum;
             }
+        }
 
-            // VietQR API: Link này sạch và chuyên nghiệp
+        function generateQR() {
+            const b = select.value, a = document.getElementById('account').value, 
+                  am = document.getElementById('amount').value, n = document.getElementById('note').value.trim();
+            
+            if(!am || am < 2000) return alert(dict[lang].err);
+
+            const fullNote = "SEVQR " + n;
             const url = `https://img.vietqr.io/image/${b}-${a}-qr_only.png?amount=${am}&addInfo=${encodeURIComponent(fullNote)}`;
 
+            document.getElementById('empty-state').classList.add('hidden');
+            const res = document.getElementById('result-content');
             const img = document.getElementById('qr-img');
-            const res = document.getElementById('result');
-
-            img.src = url;
-            
-            // Fill thông tin bên dưới
-            document.getElementById('out-bank').textContent = banks.find(x => x.c === b).n;
-            document.getElementById('out-acc').textContent = a;
-            document.getElementById('out-amt').textContent = Number(am).toLocaleString('vi-VN') + " VNĐ";
-            document.getElementById('out-note').textContent = fullNote;
 
             res.classList.remove('hidden');
+            img.src = url;
+
+            document.getElementById('out-bank').innerText = banks.find(x => x.c === b).n;
+            document.getElementById('out-acc').innerText = a;
+            document.getElementById('out-amt').innerText = Number(am).toLocaleString('vi-VN') + " đ";
+            document.getElementById('out-note').innerText = fullNote;
+
             img.onload = () => {
-                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                if(window.innerWidth < 768) window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
             };
         }
     </script>
