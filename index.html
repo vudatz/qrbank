@@ -16,7 +16,6 @@
         .dark .input-bg { background-color: #334155 !important; color: white !important; }
         .dark .detail-container { background-color: #0f172a !important; border: 1px solid #334155; }
         
-        /* KHÓA CỨNG MÀU CHỮ CHI TIẾT */
         #out-bank, #out-acc { color: #1e293b !important; font-weight: 700; }
         #out-amt { color: #3b82f6 !important; font-weight: 800; }
         #out-note { color: #0f172a !important; font-weight: 800; }
@@ -50,9 +49,6 @@
             gap: 8px;
         }
         .dark .btn-toggle { background-color: #1e293b; color: white; border-color: #334155; }
-        
-        /* Căn chỉnh logo Gemini lấp lánh phóng to */
-        .sparkle-logo { width: 52px; height: 52px; flex-shrink: 0; }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen flex flex-col items-center justify-center p-4 md:p-10">
@@ -60,7 +56,7 @@
     <div class="w-full max-w-5xl flex-grow flex flex-col justify-center">
         <div class="flex justify-end gap-3 mb-6">
             <button onclick="toggleLang()" class="btn-toggle shadow-sm">
-                <span id="lang-text">🇻🇳 Tiếng Việt</span>
+                <span id="lang-text">1. 🇻🇳 Tiếng Việt</span>
             </button>
             <button onclick="toggleDarkMode()" class="btn-toggle shadow-sm w-12 justify-center">
                 <span id="dark-icon">🌙</span>
@@ -70,22 +66,9 @@
         <div class="flex flex-col md:flex-row gap-10 items-start">
             <div class="card-bg bg-white w-full md:w-5/12 p-8 rounded-[40px] shadow-xl border border-slate-100">
                 <header class="mb-8">
-                    <div class="flex items-center gap-4">
-                        <svg class="sparkle-logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" fill="url(#gemini_grad)"/>
-                            <path d="M19 3L19.7 5.3L22 6L19.7 6.7L19 9L18.3 6.7L16 6L18.3 5.3L19 3Z" fill="url(#gemini_grad)"/>
-                            <defs>
-                                <linearGradient id="gemini_grad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
-                                    <stop stop-color="#4285F4"/>
-                                    <stop offset="0.5" stop-color="#9B72CB"/>
-                                    <stop offset="1" stop-color="#D96570"/>
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                        <div class="flex flex-col justify-center">
-                            <h1 class="text-3xl font-extrabold tracking-tight text-blue-600 leading-none">@vudatz – API Bank</h1>
-                            <p id="sub-title" class="text-base text-slate-500 font-medium mt-1 leading-tight">Hệ thống tạo mã QR thanh toán</p>
-                        </div>
+                    <div class="flex flex-col">
+                        <h1 class="text-3xl font-extrabold tracking-tight text-blue-600 leading-none">@vudatz – API Bank</h1>
+                        <p id="sub-title" class="text-base text-slate-500 font-medium mt-2 leading-tight">Hệ thống tạo mã QR thanh toán</p>
                     </div>
                 </header>
 
@@ -114,8 +97,7 @@
                     <div>
                         <label id="lbl-note" class="text-[10px] font-bold text-slate-400 uppercase ml-2 mb-1 block">Nội dung</label>
                         <div class="input-group input-bg bg-slate-50 p-4 flex items-center">
-                            <span class="text-blue-600 font-black text-xs mr-2 uppercase">SEVQR</span>
-                            <input type="text" id="note" placeholder="..." class="w-full bg-transparent outline-none font-bold">
+                            <input type="text" id="note" placeholder="Mặc định: chuyen tien" class="w-full bg-transparent outline-none font-bold">
                         </div>
                     </div>
 
@@ -161,9 +143,9 @@
         </div>
     </div>
 
-    <footer class="w-full max-w-5xl mt-10 pb-6 border-t border-slate-200 dark:border-slate-800 pt-6 flex flex-col md:flex-row justify-between items-center text-slate-400 text-xs font-bold uppercase tracking-widest gap-4">
-        <div>@vudatz 2026</div>
-        <a href="https://facebook.com/vudatz" target="_blank" class="flex items-center gap-2 hover:text-blue-500 transition-colors">
+    <footer class="w-full max-w-5xl mt-10 pb-6 border-t border-slate-200 dark:border-slate-800 pt-6 flex flex-col md:flex-row justify-between items-center text-slate-400 text-xs font-bold tracking-widest gap-4">
+        <div class="lowercase">@vudatz 2026</div>
+        <a href="https://facebook.com/vudatz" target="_blank" class="flex items-center gap-2 hover:text-blue-500 transition-colors uppercase">
             <span>Hỗ trợ</span>
         </a>
     </footer>
@@ -180,7 +162,7 @@
 
         const dict = {
             vi: { sub: "Hệ thống tạo mã QR thanh toán", bank: "Ngân hàng", acc: "Số tài khoản", amt: "Số tiền (Tối thiểu 2.000đ)", note: "Nội dung", btn: "Tạo mã ngay", resBank: "Ngân hàng", resAcc: "Số tài khoản", resAmt: "Số tiền", resNote: "Nội dung chuyển khoản", err: "Số tiền tối thiểu là 2.000đ", langBtn: "1. 🇻🇳 Tiếng Việt", hint: "Nhấn giữ để lưu ảnh" },
-            en: { sub: "QR Payment System", bank: "Bank", acc: "Account No.", amt: "Amount (Min 2,000đ)", note: "Reference", btn: "Generate Now", resBank: "Bank", resAcc: "Account", resAmt: "Value", resNote: "Description", err: "Minimum amount is 2,000đ", langBtn: "2. 🇺🇳 English", hint: "Touch & Hold to Save" }
+            en: { sub: "QR Payment System", bank: "Bank", acc: "Account No.", amt: "Amount (Min 2,000đ)", note: "Reference", btn: "Generate Now", resBank: "Bank", resAcc: "Account", resAmt: "Value", resNote: "Description", err: "Minimum amount is 2,000đ", langBtn: "2. 🇺🇸 English", hint: "Touch & Hold to Save" }
         };
 
         const select = document.getElementById('bank-select');
@@ -225,12 +207,15 @@
 
         function generateQR() {
             const b = select.value, a = document.getElementById('account').value, 
-                  am = document.getElementById('amount').value, n = document.getElementById('note').value.trim();
+                  am = document.getElementById('amount').value;
+            let n = document.getElementById('note').value.trim();
+            
+            // Nếu nội dung trống, gán mặc định là "chuyen tien"
+            if (!n) { n = "chuyen tien"; }
             
             if(!am || am < 2000) return alert(dict[lang].err);
 
-            const fullNote = "SEVQR " + n;
-            const url = `https://img.vietqr.io/image/${b}-${a}-qr_only.png?amount=${am}&addInfo=${encodeURIComponent(fullNote)}`;
+            const url = `https://img.vietqr.io/image/${b}-${a}-qr_only.png?amount=${am}&addInfo=${encodeURIComponent(n)}`;
 
             document.getElementById('empty-state').classList.add('hidden');
             const res = document.getElementById('result-content');
@@ -242,7 +227,7 @@
             document.getElementById('out-bank').innerText = banks.find(x => x.c === b).n;
             document.getElementById('out-acc').innerText = a;
             document.getElementById('out-amt').innerText = Number(am).toLocaleString('vi-VN') + " đ";
-            document.getElementById('out-note').innerText = fullNote;
+            document.getElementById('out-note').innerText = n;
 
             img.onload = () => {
                 if(window.innerWidth < 768) window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
