@@ -19,12 +19,7 @@
             transition: opacity 0.5s ease, visibility 0.5s;
         }
         .dark #main-loader { background-color: #0f172a; }
-
-        .blob {
-            width: 112px; height: 112px; display: grid;
-            background: #fff; filter: blur(5.6px) contrast(10);
-            padding: 11.2px; mix-blend-mode: darken;
-        }
+        .blob { width: 112px; height: 112px; display: grid; background: #fff; filter: blur(5.6px) contrast(10); padding: 11.2px; mix-blend-mode: darken; }
         .dark .blob { background: #0f172a; mix-blend-mode: lighten; }
         .blob:before, .blob:after { content: ""; grid-area: 1/1; width: 44.8px; height: 44.8px; background: #474bff; animation: blob-rhf26m 2s infinite; }
         .blob:after { animation-delay: -1s; }
@@ -32,26 +27,23 @@
 
         .input-box-custom { background-color: #f1f5f9 !important; color: #1e293b !important; border: 2px solid transparent; }
         .dark .input-box-custom { background-color: #334155 !important; color: #ffffff !important; }
-        select option { background-color: #ffffff !important; color: #1e293b !important; }
-        .dark select option { background-color: #1e293b !important; color: #ffffff !important; }
-
+        
         #out-amt { color: #2563eb !important; font-weight: 800; font-size: 1.5rem; }
         .detail-container { background-color: #f8fafd !important; border-radius: 30px; padding: 25px; border: 1px solid #e2e8f0 !important; }
         .dark .detail-container { background-color: #0f172a !important; border: 1px solid #334155 !important; }
         input:read-only { cursor: not-allowed; opacity: 0.8; }
+        html { scroll-behavior: smooth; }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen flex flex-col items-center justify-center p-4 md:p-10">
 
-    <div id="main-loader">
-        <div class="blob"></div>
-    </div>
+    <div id="main-loader"><div class="blob"></div></div>
 
     <div class="w-full max-w-6xl">
         <div class="flex justify-end items-center gap-4 mb-8">
-            <span id="sync-status" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest hidden md:block">Đang đồng bộ...</span>
+            <span id="sync-status" class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Auto-sync: 2s</span>
             <a href="https://docs.google.com/spreadsheets/d/1f2chmOcuViBdf-sfpFA6FHnlDXuj25LCRC9xEItqkNI/edit?usp=sharing" target="_blank" class="px-4 py-2 bg-blue-50 dark:bg-blue-900/20 rounded-full shadow-sm text-[11px] font-bold text-blue-600 hover:underline">📄 Xem file tại đây</a>
-            <button onclick="toggleDarkMode()" class="p-3 bg-white dark:bg-slate-800 rounded-full shadow-sm">🌙</button>
+            <button onclick="toggleDarkMode()" class="p-3 bg-white dark:bg-slate-800 rounded-full shadow-sm hover:scale-110 transition-transform">🌙</button>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
@@ -82,25 +74,26 @@
                             <input type="text" id="note" readonly placeholder="Chọn lớp để tự điền..." class="w-full bg-transparent outline-none font-bold text-slate-500">
                         </div>
                     </div>
-
-                    <button onclick="generateQR()" id="btn-gen" class="w-full bg-blue-600 text-white py-5 rounded-2xl font-extrabold text-sm uppercase tracking-widest hover:bg-blue-700 active:scale-95 transition-all shadow-xl mt-4">
-                        <span id="btn-text">Tạo mã ngay</span>
-                    </button>
+                    
+                    <div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-100 dark:border-blue-800/30">
+                        <p class="text-[11px] text-blue-600 dark:text-blue-400 font-medium text-center">Mã QR sẽ tự động hiển thị ngay sau khi chọn lớp.</p>
+                    </div>
                 </div>
             </div>
 
             <div id="result-side" class="flex flex-col items-center justify-center min-h-[400px]">
                 <div id="empty-state" class="text-slate-200 dark:text-slate-800 text-center">
                     <svg class="w-48 h-48 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <p class="mt-4 text-[11px] font-bold text-slate-300 uppercase tracking-widest">Đang đợi bạn chọn lớp...</p>
                 </div>
                 
-                <div id="result-content" class="hidden w-full flex flex-col items-center animate-in fade-in duration-700">
+                <div id="result-content" class="hidden w-full flex flex-col items-center animate-in fade-in zoom-in duration-500">
                     <div class="bg-white p-6 rounded-[50px] shadow-2xl mb-8 border border-slate-100"><img id="qr-img" src="" class="w-64 h-64 md:w-80 md:h-80 object-contain"></div>
                     <div class="detail-container w-full max-w-[400px] shadow-lg border border-white dark:border-slate-800">
                         <div class="space-y-4 text-sm md:text-base">
-                            <div class="flex justify-between items-center"><span class="text-slate-400 font-medium">Ngân hàng</span><span class="font-bold dark:text-white">VietinBank</span></div>
-                            <div class="flex justify-between items-center"><span class="text-slate-400 font-medium">Số tài khoản</span><span class="font-mono font-bold dark:text-white">10323888</span></div>
-                            <div class="flex justify-between items-center border-b pb-4 dark:border-slate-700"><span class="text-slate-400 font-medium">Số tiền</span><span id="out-amt"></span></div>
+                            <div class="flex justify-between items-center text-slate-800 dark:text-white"><span class="text-slate-400 font-medium">Ngân hàng</span><span class="font-bold">VietinBank</span></div>
+                            <div class="flex justify-between items-center text-slate-800 dark:text-white"><span class="text-slate-400 font-medium">Số tài khoản</span><span class="font-mono font-bold">10323888</span></div>
+                            <div class="flex justify-between items-center border-b pb-4 dark:border-slate-700 text-slate-800 dark:text-white"><span class="text-slate-400 font-medium">Số tiền</span><span id="out-amt"></span></div>
                         </div>
                         <div class="mt-8 text-center">
                             <span class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] block mb-2">Nội dung chuyển khoản</span>
@@ -116,78 +109,89 @@
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzTEMPISZ3w_rMTSCN_g7e2jdyVgI53j0wf8VwFTDPHFzm4h8UGetiz0gIbME_fmoH7/exec";
         let finalClassData = [];
-        let currentSelectedIdx = null;
+        let lastAmountValue = "";
 
         async function loadData(isSilent = false) {
-            if(!isSilent) document.getElementById('main-loader').style.opacity = '1';
-            else document.getElementById('sync-status').classList.remove('hidden');
-
             try {
-                const res = await fetch(SCRIPT_URL + '?t=' + new Date().getTime()); // Tránh cache
+                const res = await fetch(SCRIPT_URL + '?t=' + Date.now());
                 const data = await res.json();
+                const oldDataStr = JSON.stringify(finalClassData);
                 
                 finalClassData = data.sort((a, b) => a.className.toString().localeCompare(b.className.toString(), undefined, { numeric: true }));
                 
                 const select = document.getElementById('class-select');
-                const prevVal = select.value;
-                
-                select.innerHTML = '<option value="">-- Chọn lớp --</option>';
-                finalClassData.forEach((item, idx) => {
-                    if(item.className) select.add(new Option(item.className, idx));
-                });
+                const currentVal = select.value;
 
-                // Nếu user đang chọn 1 lớp, cập nhật lại số tiền nếu bạn có sửa ở Sheet
-                if(prevVal !== "") {
-                    select.value = prevVal;
-                    applyClassData();
+                if (oldDataStr !== JSON.stringify(finalClassData)) {
+                    select.innerHTML = '<option value="">-- Chọn lớp của bạn --</option>';
+                    finalClassData.forEach((item, idx) => { if(item.className) select.add(new Option(item.className, idx)); });
+                    if(currentVal !== "") select.value = currentVal;
+                }
+                
+                // Nếu đang chọn lớp, kiểm tra xem tiền trong Sheets có thay đổi không để vẽ lại QR
+                if(currentVal !== "") {
+                    const item = finalClassData[currentVal];
+                    const newAmt = Number(item.amount).toLocaleString('vi-VN');
+                    if (newAmt !== lastAmountValue) {
+                        applyClassData();
+                    }
                 }
 
                 if(!isSilent) {
                     document.getElementById('main-loader').style.opacity = '0';
                     setTimeout(() => { document.getElementById('main-loader').style.visibility = 'hidden'; }, 500);
                 }
-                document.getElementById('sync-status').classList.add('hidden');
-            } catch (e) {
-                console.error("Lỗi đồng bộ:", e);
-            }
+            } catch (e) { console.error(e); }
         }
 
-        // Tự động cập nhật mỗi 30 giây
-        setInterval(() => loadData(true), 30000);
+        setInterval(() => loadData(true), 2000); // Quét mỗi 2 giây
         loadData();
 
         function applyClassData() {
             const idx = document.getElementById('class-select').value;
-            if (idx === "") return;
+            if (idx === "") {
+                document.getElementById('empty-state').classList.remove('hidden');
+                document.getElementById('result-content').classList.add('hidden');
+                return;
+            }
+            
             const item = finalClassData[idx];
             let cleanedName = item.className.toString().replace(/\s+\d+$/, '').trim();
-            document.getElementById('amount').value = Number(item.amount).toLocaleString('vi-VN');
+            const formattedAmt = Number(item.amount).toLocaleString('vi-VN');
+            
+            document.getElementById('amount').value = formattedAmt;
+            lastAmountValue = formattedAmt; // Lưu vết để so sánh sync
             document.getElementById('note').value = `TT tien in lop ${cleanedName}`;
+            
+            // Tự động kích hoạt tạo QR
+            generateQRAuto();
         }
 
-        function formatCurrency(input) {
-            let value = input.value.replace(/\D/g, "");
-            input.value = value ? Number(value).toLocaleString('vi-VN') : "";
-        }
-
-        function toggleDarkMode() { document.body.classList.toggle('dark'); }
-
-        function generateQR() {
+        function generateQRAuto() {
             const raw = document.getElementById('amount').value.replace(/\./g, "");
             const am = parseInt(raw), b = "ICB", a = "10323888";
             let n = document.getElementById('note').value.trim() || "chuyen tien";
-            if(!am || am < 2000) return alert("Vui lòng nhập tiền từ 2.000đ");
+            
+            if(!am || am < 2000) return;
             
             const img = document.getElementById('qr-img');
             img.src = `https://img.vietqr.io/image/${b}-${a}-qr_only.png?amount=${am}&addInfo=${encodeURIComponent(n)}`;
+            
             img.onload = () => {
                 document.getElementById('empty-state').classList.add('hidden');
                 document.getElementById('result-content').classList.remove('hidden');
                 document.getElementById('out-amt').innerText = am.toLocaleString('vi-VN') + " đ";
                 document.getElementById('out-note-final').innerText = n;
-                if(window.innerWidth < 1024) document.getElementById('result-side').scrollIntoView({ behavior: 'smooth' });
             };
         }
+
+        function formatCurrency(input) {
+            let value = input.value.replace(/\D/g, "");
+            input.value = value ? Number(value).toLocaleString('vi-VN') : "";
+            if(document.getElementById('class-select').value !== "") generateQRAuto();
+        }
+
+        function toggleDarkMode() { document.body.classList.toggle('dark'); }
     </script>
 </body>
 </html>
