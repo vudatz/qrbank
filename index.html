@@ -18,8 +18,8 @@
         /* Fix màu trong detail-container khi ở chế độ tối */
         .dark .detail-container { background-color: #1e293b !important; border: 1px solid #334155; }
         .dark #out-bank, .dark #out-acc { color: #f1f5f9 !important; }
-        .dark #out-note { color: #3b82f6 !important; } /* Màu xanh nổi bật trên nền tối */
-        .dark .text-slate-400 { color: #94a3b8 !important; } /* Làm sáng các label phụ */
+        .dark #out-note { color: #3b82f6 !important; } 
+        .dark .text-slate-400 { color: #94a3b8 !important; } 
         .dark .border-b { border-color: #334155 !important; }
         
         #out-bank, #out-acc { color: #1e293b; font-weight: 700; }
@@ -30,7 +30,7 @@
         .input-group:focus-within { border-color: #3b82f6; background: white; }
         .dark .input-group:focus-within { background: #1e293b; }
         
-        /* LOADER FIX - Flexbox căn giữa chuẩn */
+        /* LOADER FIX */
         .loader-container { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
         .loader { 
             border: 2px solid rgba(255, 255, 255, 0.3); 
@@ -43,6 +43,10 @@
         
         .btn-toggle { background-color: white; color: #1e293b; border: 1px solid #e2e8f0; padding: 8px 16px; border-radius: 100px; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
         .dark .btn-toggle { background-color: #1e293b; color: white; border-color: #475569; }
+
+        /* Style cho link tiêu đề */
+        .header-link { transition: opacity 0.2s; }
+        .header-link:hover { opacity: 0.8; }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen flex flex-col items-center justify-center p-4 md:p-10">
@@ -55,7 +59,9 @@
         <div class="flex flex-col md:flex-row gap-10 items-start">
             <div class="card-bg bg-white w-full md:w-5/12 p-8 rounded-[40px] shadow-xl border border-slate-100">
                 <header class="mb-8">
-                    <h1 class="text-3xl font-extrabold tracking-tight text-blue-600 leading-none">@vudatz – API Bank</h1>
+                    <a href="http://vudatz.id.vn/p.html" target="_blank" class="header-link block">
+                        <h1 class="text-3xl font-extrabold tracking-tight text-blue-600 leading-none">@vudatz – API Bank</h1>
+                    </a>
                     <p id="sub-title" class="text-base text-slate-500 font-medium mt-2 leading-tight">Hệ thống tạo mã QR thanh toán</p>
                 </header>
                 <div class="space-y-5">
