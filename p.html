@@ -21,16 +21,19 @@
         .social-btn:hover { border-color: #3b82f6; background-color: white; transform: translateY(-2px); }
         .dark .social-btn { background-color: #334155; color: white; }
 
+        /* FIX DETAIL CONTAINER: Nền tối hơn trong dark mode để lộ chữ trắng */
         .detail-container { background-color: #f8fafd; border-radius: 30px; padding: 25px; border: 1px solid #e2e8f0; }
         .dark .detail-container { background-color: #0f172a !important; border: 1px solid #334155; }
+
+        /* FIX TEXT COLOR: Ép màu chữ theo Mode */
+        .stk-text { color: #1e293b; transition: color 0.3s; }
+        .dark .stk-text { color: #ffffff !important; }
 
         .count-box { background: rgba(59, 130, 246, 0.08); padding: 10px; border-radius: 18px; min-width: 65px; border: 1px solid rgba(59, 130, 246, 0.1); }
         .count-num { display: block; font-size: 1.25rem; font-weight: 800; color: #2563eb; }
         .count-label { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; color: #64748b; }
 
         #player-wrapper { position: fixed; left: -9999px; top: -9999px; visibility: hidden; }
-
-        /* Animation cho đĩa nhạc */
         .rotating { animation: spin 3s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     </style>
@@ -79,7 +82,7 @@
                 </div>
                 <div class="space-y-1 text-sm text-center">
                     <p class="text-slate-400 text-[10px] uppercase font-bold tracking-widest">Donate via MBBank</p>
-                    <p class="font-mono font-black text-lg dark:text-white">654765</p>
+                    <p class="stk-text font-mono font-black text-xl tracking-tighter">654765</p>
                 </div>
             </div>
 
@@ -103,7 +106,6 @@
     </div>
 
     <script>
-        // DARK MODE
         let isDark = false;
         function toggleDarkMode() {
             isDark = !isDark;
@@ -111,7 +113,6 @@
             document.getElementById('dark-icon').innerText = isDark ? '☀️' : '🌙';
         }
 
-        // COUNTDOWN
         function updateCountdown() {
             const target = new Date(`Jan 1, 2026 00:00:00`).getTime();
             const now = new Date().getTime();
@@ -127,7 +128,6 @@
         }
         setInterval(updateCountdown, 1000); updateCountdown();
 
-        // MUSIC API
         var player;
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
