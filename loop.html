@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Tool Mã Nhúng Cày View</title>
+    <style>
+        body { background: #000; color: #fff; text-align: center; font-family: sans-serif; }
+        .input-group { background: #222; padding: 20px; border-bottom: 2px solid #ff0000; position: sticky; top: 0; z-index: 100; }
+        input { padding: 10px; border-radius: 5px; border: none; margin: 5px; }
+        #linkInput { width: 350px; }
+        button { padding: 10px 20px; background: #ff0000; color: #fff; border: none; cursor: pointer; font-weight: bold; border-radius: 5px; }
+        #grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; padding: 20px; }
+        .video-box { border: 1px solid #333; background: #111; padding: 10px; border-radius: 8px; }
+        iframe { width: 100%; height: 200px; }
+    </style>
+</head>
+<body>
+
+<div class="input-group">
+    <h2>CÀY VIEW IFRAME (MÃ NHÚNG)</h2>
+    <input type="text" id="linkInput" placeholder="Dán link video YouTube vào đây...">
+    <input type="number" id="threads" value="4" min="1" max="20" style="width: 50px;"> Luồng<br>
+    <button onclick="chayMaNhung()">BẮT ĐẦU NHÚNG</button>
+</div>
+
+<div id="grid"></div>
+
+<script>
+    function getID(url) {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : null;
+    }
+
+    function chayMaNhung() {
+        const url = document.getElementById('linkInput').value;
+        const count = document.getElementById('threads').value;
+        const id = getID(url);
+        const grid = document.getElementById('grid');
+
+        if(!id) {
+            alert("Link này tao chịu, đưa link chuẩn YouTube xem nào!");
+            return;
+        }
+
+        grid.innerHTML = ""; // Xóa cũ
+
+        // Cấu trúc URL nhúng tối ưu nhất để lách lỗi 153
+        // autoplay=1 (tự chạy), mute=1 (tắt tiếng), loop=1 (vòng lặp), playlist=(bắt buộc để loop)
+        const embedUrl = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&enablejsapi=1`;
+
+        for(let i = 0; i < count; i++) {
+            const box = document.createElement('div');
+            box.className = 'video-box';
+            box.innerHTML = `
+                <iframe 
+                    src="${embedUrl}" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            `;
+            grid.appendChild(box);
+        }
+    }
+</script>
+
+</body>
+</html>
