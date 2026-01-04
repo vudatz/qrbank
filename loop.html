@@ -2,99 +2,195 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Tool Cày View - Auto Reload Custom</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube View Dashboard - Premium</title>
     <style>
-        body { background: #000; color: #fff; text-align: center; font-family: 'Segoe UI', sans-serif; }
-        .config-box { background: #1a1a1a; padding: 20px; border-radius: 10px; margin-top: 20px; display: inline-block; width: 90%; border: 2px solid #ff0000; }
-        textarea { width: 95%; height: 60px; background: #000; color: #0f0; border: 1px solid #444; padding: 10px; margin-bottom: 10px; }
-        .controls { margin: 10px 0; }
-        input[type="number"] { padding: 8px; background: #333; color: #fff; border: 1px solid #555; width: 70px; border-radius: 5px; text-align: center; }
-        .btn-start { padding: 12px 35px; background: #ff0000; color: white; border: none; cursor: pointer; font-weight: bold; border-radius: 5px; text-transform: uppercase; }
-        .btn-start:hover { background: #b30000; }
-        #container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; padding: 20px; }
-        iframe { width: 100%; height: 180px; border: 1px solid #333; border-radius: 5px; }
-        .status-bar { color: #00ff00; font-family: monospace; margin-top: 10px; font-size: 1.2em; }
+        :root {
+            --primary: #ff0000;
+            --bg: #0a0a0b;
+            --card: #161618;
+            --text: #ffffff;
+            --accent: #2ecc71;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', -apple-system, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .header {
+            width: 100%;
+            padding: 30px 0;
+            background: linear-gradient(to bottom, #1f1f23, var(--bg));
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+
+        h1 { margin: 0; font-size: 24px; letter-spacing: 1px; color: var(--primary); }
+
+        .control-panel {
+            background: var(--card);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin: -30px 20px 30px 20px;
+            width: 90%;
+            max-width: 800px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            border: 1px solid #333;
+        }
+
+        input {
+            background: #252529;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 12px 15px;
+            border-radius: 8px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus { border-color: var(--primary); }
+
+        #videoUrl { flex: 2; min-width: 250px; }
+        .num-input { width: 80px; }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,0,0,0.3); }
+
+        .status-container {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 10px;
+            font-family: monospace;
+            color: var(--accent);
+        }
+
+        #video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            width: 95%;
+            padding-bottom: 50px;
+        }
+
+        .video-card {
+            background: var(--card);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #333;
+            transition: 0.3s;
+        }
+
+        .video-card:hover { border-color: #555; }
+
+        iframe { width: 100%; aspect-ratio: 16/9; border: none; }
+
+        .card-info { padding: 10px; font-size: 12px; color: #888; text-align: left; }
     </style>
 </head>
 <body>
 
-<div class="config-box">
-    <h2>YOUTUBE REFRESHER PRO</h2>
-    <textarea id="embedCode" placeholder='Dán mã nhúng <iframe> vào đây...'></textarea>
-    
-    <div class="controls">
-        <label>Số luồng: </label>
-        <input type="number" id="threads" value="4" min="1">
-        
-        <label style="margin-left: 20px;">Reload sau (giây): </label>
-        <input type="number" id="reloadTime" value="30" min="5">
-    </div>
-    
-    <button class="btn-start" onclick="startBruteForce()">Kích Hoạt Ngay</button>
-    <div class="status-bar" id="status">Sẵn sàng...</div>
+<div class="header">
+    <h1>YOUTUBE VIEW PANEL</h1>
 </div>
 
-<div id="container"></div>
+<div class="control-panel">
+    <input type="text" id="videoUrl" placeholder="Dán link video YouTube vào đây...">
+    <div style="display: flex; gap: 10px; align-items: center;">
+        <span>Luồng:</span>
+        <input type="number" id="threads" class="num-input" value="4" min="1">
+    </div>
+    <div style="display: flex; gap: 10px; align-items: center;">
+        <span>Reload (s):</span>
+        <input type="number" id="reloadTime" class="num-input" value="30" min="5">
+    </div>
+    <button onclick="startEngine()">BẮT ĐẦU CHẠY</button>
+</div>
+
+<div class="status-container" id="timerStatus">Hệ thống đang chờ lệnh...</div>
+
+<div id="video-grid"></div>
 
 <script>
-    let timerObj = null;
-    let countdownObj = null;
+    let mainInterval = null;
+    let countdownInterval = null;
 
-    function startBruteForce() {
-        const rawCode = document.getElementById('embedCode').value;
-        const count = document.getElementById('threads').value;
-        const seconds = document.getElementById('reloadTime').value;
-        const container = document.getElementById('container');
-        const status = document.getElementById('status');
+    function getID(url) {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : null;
+    }
 
-        if(!rawCode.includes('src="')) return alert("Mã nhúng không đúng rồi mày!");
+    function startEngine() {
+        const url = document.getElementById('videoUrl').value;
+        const threadCount = document.getElementById('threads').value;
+        const reloadSecs = document.getElementById('reloadTime').value;
+        const videoId = getID(url);
+        
+        if (!videoId) {
+            alert("Mày dán cái link gì thế? Check lại đi!");
+            return;
+        }
 
-        // Dừng các tiến trình cũ nếu có
-        clearInterval(timerObj);
-        clearInterval(countdownObj);
+        // Dọn dẹp tiến trình cũ
+        clearInterval(mainInterval);
+        clearInterval(countdownInterval);
 
-        // Hàm để load video
-        const loadVideos = () => {
-            container.innerHTML = "";
-            let urlMatch = rawCode.match(/src="([^"]+)"/);
-            if(!urlMatch) return;
-            let baseSrc = urlMatch[1];
+        const spawnVideos = () => {
+            const grid = document.getElementById('video-grid');
+            grid.innerHTML = "";
             
-            // Thêm các tham số để tự chạy và tắt tiếng
-            let separator = baseSrc.includes('?') ? '&' : '?';
-            let finalUrl = baseSrc + separator + "autoplay=1&mute=1&t=" + Math.random();
+            // Random một tham số nhỏ để tránh bị YouTube cache kết quả
+            const cacheBuster = Math.floor(Math.random() * 1000);
+            const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&t=${cacheBuster}`;
 
-            for(let i = 0; i < count; i++) {
-                let currentIframe = rawCode.replace(/src="[^"]+"/, `src="${finalUrl}"`);
-                const div = document.createElement('div');
-                div.innerHTML = currentIframe;
-                const ifr = div.querySelector('iframe');
-                if(ifr) {
-                    ifr.style.width = "100%";
-                    ifr.style.height = "180px";
-                }
-                container.appendChild(div);
+            for (let i = 0; i < threadCount; i++) {
+                const card = document.createElement('div');
+                card.className = 'video-card';
+                card.innerHTML = `
+                    <iframe src="${embedUrl}" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    <div class="card-info">Luồng #${i+1} | Trạng thái: Đang chạy</div>
+                `;
+                grid.appendChild(card);
             }
-            console.log("Đã reload tất cả luồng!");
+            console.log("Hệ thống đã reload.");
         };
 
-        // Chạy lần đầu
-        loadVideos();
+        // Chạy lần đầu ngay lập tức
+        spawnVideos();
 
-        // Thiết lập đếm ngược hiển thị cho vui mắt
-        let timeLeft = seconds;
-        countdownObj = setInterval(() => {
+        // Xử lý đếm ngược
+        let timeLeft = reloadSecs;
+        countdownInterval = setInterval(() => {
             timeLeft--;
-            if(timeLeft <= 0) timeLeft = seconds;
-            status.innerText = `Sẽ Reload sau: ${timeLeft}s...`;
+            document.getElementById('timerStatus').innerText = `Tự động nạp lại sau: ${timeLeft} giây nữa...`;
+            if (timeLeft <= 0) timeLeft = reloadSecs;
         }, 1000);
 
         // Thiết lập vòng lặp reload
-        timerObj = setInterval(() => {
-            loadVideos();
-        }, seconds * 1000);
-
-        status.innerText = `Đang chạy ${count} luồng...`;
+        mainInterval = setInterval(spawnVideos, reloadSecs * 1000);
+        
+        document.getElementById('timerStatus').innerText = "Đã kích hoạt hệ thống!";
     }
 </script>
 
