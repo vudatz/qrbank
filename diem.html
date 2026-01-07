@@ -3,287 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ thống tính điểm qua môn</title>
+    <title>Hệ thống tính điểm</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         :root {
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --primary: #2563eb;
-            --text: #1e293b;
-            --text-dim: #64748b;
-            --border: #e2e8f0;
+            --bg: #f8fafc; --card-bg: #ffffff; --primary: #2563eb;
+            --text: #1e293b; --text-dim: #64748b; --border: #e2e8f0;
         }
-
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text);
+            margin: 0; display: flex; flex-direction: column; justify-content: center;
+            align-items: center; min-height: 100vh; padding: 20px;
         }
-
         .container {
-            width: 100%;
-            max-width: 400px;
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 35px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
-            border: 1px solid var(--border);
+            width: 100%; max-width: 400px; background: var(--card-bg); border-radius: 20px;
+            padding: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); border: 1px solid var(--border);
             position: relative;
         }
-
-        .btn-support {
-            position: absolute;
-            top: 25px;
-            right: 25px;
-            color: var(--text-dim);
-            transition: 0.2s;
-        }
+        .btn-support { position: absolute; top: 25px; right: 25px; color: var(--text-dim); transition: 0.2s; }
         .btn-support:hover { color: #1877f2; }
-
-        .header { text-align: center; margin-bottom: 30px; }
-        
-        .header h1 { 
-            font-size: 24px; 
-            margin: 0 0 8px 0; 
-            font-weight: 800; 
-            letter-spacing: -0.025em;
-            color: #0f172a;
-        }
-
-        .header p {
-            font-size: 13px;
-            color: var(--text-dim);
-            margin: 0;
-            font-style: italic;
-        }
-
+        .header h1 { font-size: 22px; margin: 0 0 30px 0; font-weight: 700; text-align: center; letter-spacing: -0.5px; }
         .form-group { margin-bottom: 20px; }
         label { display: block; font-size: 13px; font-weight: 600; color: var(--text-dim); margin-bottom: 8px; }
-
-        input {
-            width: 100%;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 12px;
-            font-size: 15px;
-            box-sizing: border-box;
-            transition: 0.2s;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        .btn-add {
-            background: none;
-            border: 1px dashed var(--border);
-            color: var(--text-dim);
-            width: 100%;
-            padding: 8px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 500;
-            margin-bottom: 20px;
-        }
+        input { width: 100%; border: 1px solid var(--border); border-radius: 10px; padding: 12px; font-size: 15px; box-sizing: border-box; transition: 0.2s; }
+        input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        .btn-add { background: none; border: 1px dashed var(--border); color: var(--text-dim); width: 100%; padding: 8px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 500; margin-bottom: 20px; }
         .btn-add:hover { border-color: var(--primary); color: var(--primary); }
-
-        .btn-main {
-            background: var(--primary);
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 14px;
-            border-radius: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-        }
+        .btn-main { background: var(--primary); color: white; border: none; width: 100%; padding: 14px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.2s; }
         .btn-main:hover { opacity: 0.9; }
-
         #results { margin-top: 30px; display: none; border-top: 1px solid var(--border); padding-top: 20px; }
         .summary { text-align: center; margin-bottom: 20px; }
         .summary small { font-size: 11px; text-transform: uppercase; color: var(--text-dim); letter-spacing: 1px; }
         .summary div { font-size: 28px; font-weight: 700; margin-top: 4px; }
-
         table { width: 100%; border-collapse: collapse; }
         th { text-align: left; font-size: 11px; color: var(--text-dim); padding-bottom: 10px; }
         td { padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
         .needed { font-weight: 700; color: var(--primary); text-align: right; }
-        
-        .footer {
-            margin-top: 20px;
-            font-size: 13px;
-            color: var(--text-dim);
-        }
-        .footer a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .footer a:hover { text-decoration: underline; }
+        .footer { margin-top: 20px; font-size: 13px; color: var(--text-dim); }
+        .footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+        /* Popup CSS */
+        .p-ov { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .p-con { position: relative; max-width: 90%; }
+        .p-con img { width: 100%; max-width: 320px; border-radius: 15px; cursor: pointer; display: block; }
+        .p-cls { position: absolute; top: -10px; right: -10px; background: #fff; width: 25px; height: 25px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 14px; font-weight: bold; border: 1px solid #ddd; }
     </style>
 </head>
 <body>
 
+<div class="p-ov" id="pop">
+    <div class="p-con">
+        <div class="p-cls" onclick="document.getElementById('pop').style.display='none'">×</div>
+        <a href="http://s.shopee.vn/30hYr7L6Jc" target="_blank"><img src="https://s6.imgcdn.dev/YzTWRB.png" alt="QC"></a>
+    </div>
+</div>
+
 <div class="container">
-    <a href="https://facebook.com/vudatz" target="_blank" class="btn-support" title="Hỗ trợ Facebook">
-        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12c0-5.523-4.477-10-10-10z"/></svg>
+    <a href="https://facebook.com/vudatz" target="_blank" class="btn-support">
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
     </a>
-
-    <div class="header">
-        <h1>Hệ thống tính điểm qua môn</h1>
-        <p>Thông tin trên web chỉ mang tính chất tham khảo</p>
-    </div>
-
+    <div class="header"><h1>Hệ thống tính điểm</h1></div>
+    <div class="form-group"><label>Chuyên cần (10%)</label><input type="number" id="cc" placeholder="0.0" step="0.1"></div>
     <div class="form-group">
-        <label>Chuyên cần (10%)</label>
-        <input type="number" id="cc" placeholder="0.0" step="0.1" min="0" max="10">
+        <label>Kiểm tra (30%)</label>
+        <div id="kt-list"><input type="number" class="kt-in" placeholder="Điểm cột 1" step="0.1" style="margin-bottom: 8px;"></div>
+        <button class="btn-add" onclick="addCol()">+ Thêm đầu điểm</button>
     </div>
-
-    <div class="form-group">
-        <label>Điểm ĐK (30%)</label>
-        <div id="kt-list">
-            <input type="number" class="kt-in" placeholder="Điểm số 1" step="0.1" min="0" max="10" style="margin-bottom: 8px;">
-        </div>
-        <button class="btn-add" onclick="addCol()">+ Thêm điểm</button>
-    </div>
-
-    <div class="form-group">
-        <label>Thi kết thúc (60%)</label>
-        <input type="number" id="thi" placeholder="Để trống nếu tính mục tiêu" step="0.1" min="0" max="10">
-    </div>
-
+    <div class="form-group"><label>Thi kết thúc (60%)</label><input type="number" id="thi" placeholder="Để trống nếu tính mục tiêu" step="0.1"></div>
     <button class="btn-main" onclick="run()">PHÂN TÍCH</button>
-
     <div id="results">
         <div class="summary" id="sum-area"></div>
         <table>
-            <thead>
-                <tr>
-                    <th>XẾP LOẠI (HỆ 4)</th>
-                    <th>MỐC 10</th>
-                    <th style="text-align: right;">THI CẦN ĐẠT</th>
-                </tr>
-            </thead>
+            <thead><tr><th>XẾP LOẠI (HỆ 4)</th><th>MỐC 10</th><th style="text-align: right;">THI CẦN ĐẠT</th></tr></thead>
             <tbody id="target-body"></tbody>
         </table>
     </div>
 </div>
-
-<div class="footer">
-    made with ❤️ by <a href="https://facebook.com/vudatz" target="_blank">vudatz</a>><</a>
-</div>
+<div class="footer">made with ❤️ by <a href="https://facebook.com/vudatz" target="_blank">vudatz</a></div>
 
 <script>
+    window.onload = () => setTimeout(() => document.getElementById('pop').style.display='flex', 1000);
     function addCol() {
         const input = document.createElement('input');
-        input.type = 'number';
-        input.className = 'kt-in';
-        input.placeholder = 'Điểm tiếp theo';
-        input.style.marginBottom = '8px';
-        input.min = "0";
-        input.max = "10";
-        input.step = "0.1";
-        document.getElementById('kt-list').appendChild(input);
+        input.type = 'number'; input.className = 'kt-in'; input.placeholder = 'Điểm tiếp theo';
+        input.style.marginBottom = '8px'; document.getElementById('kt-list').appendChild(input);
     }
-
-    function validatePoint(val) {
-        if (val === "" || isNaN(val)) return 0;
-        let p = parseFloat(val);
-        if (p < 0 || p > 10) return null;
-        return p;
-    }
-
     function run() {
-        // Lấy và kiểm tra điểm chuyên cần
-        const ccInput = document.getElementById('cc').value;
-        const cc = validatePoint(ccInput);
-        
-        // Lấy và kiểm tra điểm thi
+        const cc = parseFloat(document.getElementById('cc').value) || 0;
         const thiInput = document.getElementById('thi').value;
-        let thi = thiInput !== "" ? validatePoint(thiInput) : 0;
-
-        // Lấy và kiểm tra điểm kiểm tra
         const inps = document.getElementsByClassName('kt-in');
         let sKT = 0, cKT = 0;
-        let isValid = true;
-
-        if (cc === null || (thiInput !== "" && thi === null)) isValid = false;
-
-        for (let i of inps) {
-            if (i.value !== "") {
-                let p = validatePoint(i.value);
-                if (p === null) {
-                    isValid = false;
-                    break;
-                }
-                sKT += p;
-                cKT++;
-            }
-        }
-
-        if (!isValid) {
-            alert("Vui lòng chỉ nhập điểm trong khoảng từ 0 đến 10!");
-            return;
-        }
-
+        for (let i of inps) { if (i.value !== "") { sKT += parseFloat(i.value); cKT++; } }
         const avgKT = cKT > 0 ? sKT / cKT : 0;
         const componentScore = (cc * 0.1) + (avgKT * 0.3);
-        
         document.getElementById('results').style.display = 'block';
         const sumArea = document.getElementById('sum-area');
-
         if (thiInput !== "") {
             const final = componentScore + (parseFloat(thiInput) * 0.6);
             sumArea.innerHTML = `<small>Kết quả tổng kết</small><div>${final.toFixed(2)}</div>`;
         } else {
             sumArea.innerHTML = `<small>Thành phần hiện có (40%)</small><div>${componentScore.toFixed(2)}</div>`;
         }
-
         const mốc = [
-            { label: "Xuất sắc (3.6)", val: 9.0 },
-            { label: "Giỏi (3.2)", val: 8.0 },
-            { label: "Khá (2.5)", val: 6.25 },
-            { label: "Trung bình (2.0)", val: 5.0 },
+            { label: "Xuất sắc (3.6)", val: 9.0 }, { label: "Giỏi (3.2)", val: 8.0 },
+            { label: "Khá (2.5)", val: 6.25 }, { label: "Trung bình (2.0)", val: 5.0 },
             { label: "Qua môn (Min)", val: 4.0 }
         ];
-
         let html = '';
         mốc.forEach(m => {
             const rawNeeded = (m.val - componentScore) / 0.6;
-            let display = "";
-
-            if (rawNeeded <= 0) {
-                display = "<span style='color:#10b981; font-weight:600'>ĐÃ ĐẠT</span>";
-            } else if (rawNeeded > 10) {
-                display = "<span style='color:#94a3b8; font-style:italic'>KHÔNG THỂ</span>";
-            } else {
-                display = `<span class='needed'>${rawNeeded.toFixed(2)}</span>`;
-            }
-
-            html += `<tr>
-                <td>${m.label}</td>
-                <td>${m.val}</td>
-                <td style="text-align:right">${display}</td>
-            </tr>`;
+            let display = rawNeeded <= 0 ? "<span style='color:#10b981; font-weight:600'>ĐÃ ĐẠT</span>" : 
+                          (rawNeeded > 10 ? "<span style='color:#94a3b8; font-style:italic'>KHÔNG THỂ</span>" : 
+                          `<span class='needed'>${rawNeeded.toFixed(2)}</span>`);
+            html += `<tr><td>${m.label}</td><td>${m.val}</td><td style="text-align:right">${display}</td></tr>`;
         });
         document.getElementById('target-body').innerHTML = html;
     }
 </script>
-
 </body>
-
 </html>
-
