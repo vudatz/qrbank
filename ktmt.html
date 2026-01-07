@@ -2,18 +2,117 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Danh sách chương</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f2f2f7;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Banner Shopee */
+        .banner {
+            display: block;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .banner img { width: 100%; display: block; }
+
+        /* List chương */
+        .list { display: flex; flex-direction: column; gap: 8px; }
+        
+        .item {
+            background: white;
+            padding: 16px 20px;
+            border-radius: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-decoration: none;
+            color: #000;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .item:active {
+            background: #ebebeb;
+            transform: scale(0.98);
+        }
+
+        .btn-text {
+            color: #007aff;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Icon hỗ trợ mini góc màn hình */
+        .support-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            background: #1877F2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: 0.3s;
+        }
+        
+        .support-btn:hover { transform: scale(1.1); }
+        .support-btn svg { width: 22px; height: 22px; fill: white; }
+    </style>
 </head>
 <body>
 
-    <ul>
-        <li>Chương 1: <a href="https://azota.vn/de-thi/xnwtco">Tại đây</a></li>
-        <li>Chương 2: <a href="https://azota.vn/de-thi/6fmym5">Tại đây</a></li>
-        <li>Chương 3: <a href="https://azota.vn/de-thi/lfc9sh">Tại đây</a></li>
-        <li>Chương 4: <a href="https://azota.vn/de-thi/pkofgu">Tại đây</a></li>
-        <li>Chương 5: <a href="https://azota.vn/de-thi/3rn8pn">Tại đây</a></li>
-        <li>Hỗ trợ: <a href="https://facebook.com/vudatz">tại đây</a></li>
-    </ul>
+    <div class="container">
+        <a href="http://s.shopee.vn/30hYr7L6Jc" target="_blank" class="banner">
+            <img src="https://down-vn.img.susercontent.com/file/sg-11134258-82621-mj5kct5plhc192@resize_w1594_nl.webp" alt="Banner">
+        </a>
+
+        <div class="list">
+            <a href="https://azota.vn/de-thi/xnwtco" class="item">
+                <span>Chương 1</span>
+                <span class="btn-text">Làm bài</span>
+            </a>
+            <a href="https://azota.vn/de-thi/6fmym5" class="item">
+                <span>Chương 2</span>
+                <span class="btn-text">Làm bài</span>
+            </a>
+            <a href="https://azota.vn/de-thi/lfc9sh" class="item">
+                <span>Chương 3</span>
+                <span class="btn-text">Làm bài</span>
+            </a>
+            <a href="https://azota.vn/de-thi/pkofgu" class="item">
+                <span>Chương 4</span>
+                <span class="btn-text">Làm bài</span>
+            </a>
+            <a href="https://azota.vn/de-thi/3rn8pn" class="item">
+                <span>Chương 5</span>
+                <span class="btn-text">Làm bài</span>
+            </a>
+        </div>
+    </div>
+
+    <a href="https://facebook.com/vudatz" class="support-btn" title="Hỗ trợ">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.91 1.453 5.501 3.734 7.232V22l3.374-1.851C10.121 20.435 11.045 20.516 12 20.516c5.523 0 10-4.145 10-9.258S17.523 2 12 2z"/>
+        </svg>
+    </a>
 
 </body>
 </html>
