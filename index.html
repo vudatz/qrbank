@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 - Không tìm thấy trang</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #222; /* Nền tối */
+    color: #eee; /* Chữ sáng */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    overflow: hidden; /* Tránh scrollbar nếu có animation ra ngoài */
+  }
+
+  h1 {
+    font-size: 6rem;
+    margin-bottom: 10px;
+    color: #f39c12; /* Màu vàng cam nổi bật */
+    text-shadow: 0 0 10px rgba(243, 156, 18, 0.5);
+  }
+
+  .message {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    max-width: 600px;
+  }
+
+  .icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+    position: relative;
+    width: 200px; /* Kích thước tổng thể cho cụm icon */
+    height: 150px;
+  }
+
+  .gear-icon {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    fill: #7f8c8d; /* Màu xám cho bánh răng */
+    animation: spin 8s linear infinite; /* Bánh răng quay chậm */
+    transform-origin: center;
+    top: 0;
+    left: 0;
+  }
+
+  .wrench-icon {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    fill: #c0392b; /* Màu đỏ cho cờ lê */
+    transform: rotate(30deg); /* Cờ lê hơi nghiêng */
+    top: 50px; /* Dịch cờ lê xuống và sang phải một chút để khớp với bánh răng */
+    left: 80px;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .home-button {
+    background: #f39c12;
+    color: #222;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+
+  .home-button:hover {
+    background: #e67e22;
+    transform: translateY(-2px);
+  }
+</style>
+</head>
+<body>
+
+  <h1>404</h1>
+  <div class="message">
+    Website hiện đang bảo trì.<br>
+	 Vui lòng quay lại sau.
+      </div>
+
