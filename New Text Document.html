@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Sinh Chuỗi Nhị Phân</title>
+</head>
+<body>
+    <h3>Nhập độ dài n:</h3>
+    <input type="number" id="n_nhap" value="3" onkeypress="if(event.key === 'Enter') chayCode()">
+    <button onclick="chayCode()">Chạy</button>
+    
+    <pre id="ketqua" style="font-size: 16px; margin-top: 20px;"></pre>
+
+    <script>
+        function chayCode() {
+            let n = parseInt(document.getElementById("n_nhap").value);
+            let kq = "";
+            let dem = 0;
+            let max = Math.pow(2, n); 
+            
+            for(let i = 0; i < max; i++) {
+                let chuoi = i.toString(2);
+                
+                while(chuoi.length < n) {
+                    chuoi = "0" + chuoi;
+                }
+                
+                kq += chuoi + "    "; 
+                dem++;
+                
+                if(dem % 5 === 0) {
+                    kq += "\n"; 
+                }
+            }
+            
+            document.getElementById("ketqua").innerHTML = kq;
+        }
+    </script>
+</body>
+</html>
